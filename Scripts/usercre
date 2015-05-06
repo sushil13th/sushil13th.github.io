@@ -1,0 +1,27 @@
+#!/bin/sh
+uhome=/home/webadmin/public_html/domain.com/public
+echo -n "Enter Directoryname: "
+read udir
+echo -n "Enter Username: "
+read uname
+echo -n "Enter password: "
+read -s password
+useradd -d "$uhome/$udir" -s /sbin/nologin -G sftponly -M "$uname"
+if [ $? != "0" ]; then
+echo "[Error]: User creation failed"
+exit 1
+else
+mkdir "$uhome/$udir"
+chmod 755 "$uhome/$udir"
+chown $uname:$uname "$uhome/$udir"
+echo $uname:$password | /usr/sbin/chpasswd
+echo "--------------------------"
+echo "User has been created successfully"
+echo "------------------------------"
+#echo " User Info: "
+echo ""
+echo " Username: $uname"
+#echo " Password: $password"
+echo ""
+echo "------------------------------------"
+fi
